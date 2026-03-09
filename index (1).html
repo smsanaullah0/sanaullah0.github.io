@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S M Sanaullah — BSc Teacher & Frontend Developer</title>
+<link rel="icon" type="image/png" href="https://cdn-icons-png.freepik.com/512/10329/10329496.png">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+<style>
+
+
+/* ═══════════════════════════════════════════
+   THEME TOKENS — Dark (default)
+═══════════════════════════════════════════ */
+:root {
+    --bg:     #f0f4f8;
+  --bg2:    #e4eaf2;
+  --bg3:    #d8e2ed;
+  --card:   rgba(255,255,255,0.8);
+  --border: rgba(0,160,135,0.2);
+  --tx:     #0d1117;
+  --tx2:    #4a5568;
+  --ac:     #008f7a;
+  --ac2:    #5a4fcf;
+  --ac3:    #d94f4f;
+  --gold:   #c8860a;
+  --glow:   0 0 30px rgba(0,160,135,0.12);
+  --nav-bg: rgba(240,244,248,0.92);
+  --mob-bg: rgba(240,244,248,0.98);
+  --grid-color: rgba(0,160,135,0.06);
+}
+
+/* ═══════════════════════════════════════════
+   THEME TOKENS — Light (day)
+═══════════════════════════════════════════ */
+[data-theme="light"] {
+    
+    
+  --bg:     #04070f;
+  --bg2:    #060a13;
+  --bg3:    #070c16;
+  --card:   rgba(255,255,255,0.032);
+  --border: rgba(0,229,195,0.13);
+  --tx:     #dde2f0;
+  --tx2:    #9aa0bc;
+  --ac:     #00e5c3;
+  --ac2:    #6c5ce7;
+  --ac3:    #fd6868;
+  --gold:   #f9c74f;
+  --glow:   0 0 40px rgba(0,229,195,0.16);
+  --nav-bg: rgba(4,7,15,0.85);
+  --mob-bg: rgba(4,7,15,0.97);
+  --grid-color: rgba(0,229,195,0.018);
+  --transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+    
+    
+    
+    
+  
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg);
+  color: var(--tx);
+  overflow-x: hidden;
+  cursor: none;
+  transition: var(--transition);
+}
+
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════ */
+#cur  { position:fixed; top:0; left:0; width:11px; height:11px; background:var(--ac); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:difference; transition:width .15s,height .15s; }
+#rng  { position:fixed; top:0; left:0; width:32px; height:32px; border:1.5px solid rgba(0,229,195,.45); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); }
+[data-theme="light"] #rng { border-color:rgba(0,143,122,.4); }
+
+/* ═══════════════════════════════════════════
+   GRID OVERLAY
+═══════════════════════════════════════════ */
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 54px 54px;
+  transition: var(--transition);
+}
+
+/* ═══════════════════════════════════════════
+   PARTICLES
+═══════════════════════════════════════════ */
+#ptc { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.pt  { position:absolute; border-radius:50%; background:var(--ac); opacity:0; animation:ptFly linear infinite; }
+@keyframes ptFly { 0%{opacity:0;transform:translateY(0)scale(0);} 10%{opacity:.4;} 90%{opacity:.03;} 100%{opacity:0;transform:translateY(-100vh)scale(1.2);} }
+
+/* ═══════════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════════ */
+@keyframes fadeUp  { from{opacity:0;transform:translateY(32px);} to{opacity:1;transform:translateY(0);} }
+@keyframes blink   { 0%,100%{opacity:1;} 50%{opacity:0;} }
+@keyframes dotPls  { 0%,100%{opacity:1;box-shadow:0 0 8px var(--ac);} 50%{opacity:.3;box-shadow:none;} }
+@keyframes orbDft  { 0%,100%{transform:translateY(0)scale(1);} 50%{transform:translateY(-28px)scale(1.04);} }
+@keyframes ringPls { 0%,100%{transform:scale(1);opacity:.5;} 50%{transform:scale(1.6);opacity:0;} }
+@keyframes scrPls  { 0%,100%{opacity:.2;} 50%{opacity:1;} }
+@keyframes themeToggle { 0%{transform:scale(1);} 50%{transform:scale(1.2) rotate(20deg);} 100%{transform:scale(1);} }
+
+/* ═══════════════════════════════════════════
+   DAY / NIGHT TOGGLE BUTTON
+═══════════════════════════════════════════ */
+#theme-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--tx);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all .3s;
+  border-radius: 2px;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+#theme-btn:hover {
+  border-color: var(--ac);
+  color: var(--ac);
+  box-shadow: var(--glow);
+}
+#theme-btn .tb-icon {
+  font-size: 1rem;
+  animation: none;
+  display: inline-block;
+  transition: transform .4s ease;
+}
+#theme-btn:hover .tb-icon { transform: rotate(20deg) scale(1.2); }
+#theme-btn .tb-txt { font-size:.68rem; }
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════ */
+nav {
+  position:fixed; top:0; width:100%; z-index:600;
+  padding:14px 60px;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  backdrop-filter:blur(26px) saturate(1.5);
+  background:var(--nav-bg);
+  border-bottom:1px solid var(--border);
+  transition: var(--transition);
+}
+.logo { font-size:.9rem; font-weight:800; color:var(--ac); letter-spacing:.22em; text-transform:uppercase; flex-shrink:0; }
+.logo span { color:var(--tx2); font-weight:400; }
+.nl { display:flex; gap:20px; list-style:none; align-items:center; }
+.nl a { color:var(--tx2); text-decoration:none; font-size:.67rem; letter-spacing:.14em; text-transform:uppercase; transition:color .25s; position:relative; }
+.nl a::after { content:''; position:absolute; bottom:-5px; left:0; width:0; height:1px; background:var(--ac); transition:width .3s; }
+.nl a:hover, .nl a.act { color:var(--ac); }
+.nl a:hover::after, .nl a.act::after { width:100%; }
+.nav-right { display:flex; align-items:center; gap:14px; }
+.ham { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:none; padding:4px; }
+.ham span { display:block; width:20px; height:1.5px; background:var(--ac); transition:all .3s; }
+.mob { display:none; position:fixed; inset:0; background:var(--mob-bg); z-index:590; flex-direction:column; align-items:center; justify-content:center; gap:28px; transition: var(--transition); }
+.mob.open { display:flex; }
+.mob a { color:var(--tx); text-decoration:none; font-size:1.15rem; letter-spacing:.13em; text-transform:uppercase; transition:color .2s; }
+.mob a:hover { color:var(--ac); }
+.mobx { position:absolute; top:20px; right:24px; background:none; border:none; color:var(--tx2); font-size:1.5rem; cursor:none; }
+
+/* ═══════════════════════════════════════════
+   SECTIONS SHARED
+═══════════════════════════════════════════ */
+section { position:relative; z-index:1; padding:104px 60px; transition: var(--transition); }
+.alt  { background:var(--bg2); }
+.alt3 { background:var(--bg3); }
+.mx   { max-width:1180px; margin:0 auto; }
+.sh   { margin-bottom:54px; }
+.sn   { font-size:.68rem; color:var(--ac); letter-spacing:.28em; text-transform:uppercase; display:block; margin-bottom:9px; }
+.st   { font-size:clamp(2rem,3.5vw,3rem); font-weight:800; line-height:1.1; }
+.st em { font-style:normal; color:var(--ac); }
+.sl   { width:50px; height:2px; background:linear-gradient(90deg,var(--ac),transparent); margin-top:14px; }
+.rv   { opacity:0; transform:translateY(26px); transition:all .72s cubic-bezier(.23,1,.32,1); }
+.rv.on { opacity:1; transform:translateY(0); }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#hero { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:130px 60px 80px; overflow:hidden; }
+.orb  { position:absolute; border-radius:50%; filter:blur(100px); pointer-events:none; animation:orbDft 10s ease-in-out infinite; }
+.o1   { width:540px; height:540px; background:radial-gradient(circle,rgba(0,229,195,.09),transparent 70%); top:-140px; right:-100px; }
+.o2   { width:440px; height:440px; background:radial-gradient(circle,rgba(108,92,231,.08),transparent 70%); bottom:-80px; left:-80px; animation-delay:-5s; }
+[data-theme="light"] .o1 { background:radial-gradient(circle,rgba(0,160,135,.07),transparent 70%); }
+[data-theme="light"] .o2 { background:radial-gradient(circle,rgba(90,79,207,.06),transparent 70%); }
+
+.hc    { max-width:900px; text-align:center; position:relative; z-index:2; }
+.badge { display:inline-flex; align-items:center; gap:9px; font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ac); border:1px solid var(--border); padding:8px 22px; background:rgba(0,229,195,.04); margin-bottom:26px; animation:fadeUp .7s .1s both; }
+[data-theme="light"] .badge { background:rgba(0,143,122,.06); }
+.badge::before { content:''; width:7px; height:7px; border-radius:50%; background:var(--ac); animation:dotPls 1.5s ease-in-out infinite; }
+
+h1.hn { font-size:clamp(2.8rem,7.5vw,6rem); font-weight:800; line-height:.92; margin-bottom:18px; animation:fadeUp .7s .28s both; background:linear-gradient(135deg,var(--tx) 0%,var(--ac) 52%,var(--ac2) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+.hr2  { font-size:clamp(.95rem,2vw,1.2rem); color:var(--tx2); letter-spacing:.06em; margin-bottom:26px; animation:fadeUp .7s .44s both; min-height:1.8em; }
+.hr2 .tp::after { content:'|'; color:var(--ac); animation:blink .75s step-end infinite; }
+
+.hd   { font-size:.95rem; color:var(--tx2); line-height:2.1; max-width:600px; margin:0 auto 44px; animation:fadeUp .7s .58s both; }
+
+.hbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; animation:fadeUp .7s .72s both; }
+.btn   { font-family:'JetBrains Mono',monospace; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; padding:13px 28px; border:none; cursor:none; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:all .3s; position:relative; overflow:hidden; }
+.bp    { background:var(--ac); color:#04070f; font-weight:800; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); }
+.bp::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent); transform:translateX(-100%); transition:transform .55s; }
+.bp:hover::before { transform:translateX(100%); }
+.bp:hover { box-shadow:0 0 30px rgba(0,229,195,.5); transform:translateY(-2px); }
+.bo    { background:transparent; color:var(--ac); border:1.5px solid var(--border); clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); }
+.bo:hover { background:rgba(0,229,195,.07); border-color:var(--ac); box-shadow:var(--glow); transform:translateY(-2px); }
+.scrl   { position:absolute; bottom:34px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--tx2); font-size:.68rem; letter-spacing:.18em; animation:fadeUp 1s 1.1s both; }
+.scrl-l { width:1px; height:44px; background:linear-gradient(to bottom,var(--ac),transparent); animation:scrPls 2s ease-in-out infinite; }
+
+/* ═══════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════ */
+.ag { display:grid; grid-template-columns:1.2fr .8fr; gap:76px; align-items:center; }
+.at p  { font-size:.92rem; color:var(--tx2); line-height:2.1; margin-bottom:16px; }
+.at p strong { color:var(--ac); font-weight:700; }
+.at p em { color:var(--gold); font-style:normal; }
+.ir    { display:flex; gap:12px; margin-bottom:11px; align-items:flex-start; }
+.il    { color:var(--ac); min-width:90px; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; flex-shrink:0; margin-top:3px; font-weight:700; }
+.iv    { font-size:.88rem; color:var(--tx2); }
+.sts   { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.sc    { background:var(--card); border:1px solid var(--border); padding:22px 18px; clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); transition:all .3s; position:relative; overflow:hidden; }
+.sc::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--ac),transparent); opacity:0; transition:opacity .3s; }
+.sc:hover { background:rgba(0,229,195,.06); transform:translateY(-4px); box-shadow:var(--glow); }
+.sc:hover::before { opacity:1; }
+.snum  { font-size:2rem; font-weight:800; color:var(--ac); line-height:1; margin-bottom:6px; }
+.slbl  { font-size:.7rem; color:var(--tx2); letter-spacing:.1em; text-transform:uppercase; }
+
+/* ═══════════════════════════════════════════
+   EDUCATION
+═══════════════════════════════════════════ */
+.eg { display:grid; grid-template-columns:repeat(auto-fill,minmax(272px,1fr)); gap:20px; }
+.ec { background:var(--card); border:1px solid var(--border); padding:30px 24px; position:relative; overflow:hidden; transition:all .4s cubic-bezier(.23,1,.32,1); clip-path:polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%); }
+.ec::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 0% 0%,rgba(0,229,195,.07),transparent 55%); opacity:0; transition:opacity .4s; }
+[data-theme="light"] .ec::before { background:radial-gradient(circle at 0% 0%,rgba(0,143,122,.07),transparent 55%); }
+.ec:hover { transform:translateY(-7px); border-color:rgba(0,229,195,.3); box-shadow:var(--glow); }
+.ec:hover::before { opacity:1; }
+.ei   { font-size:1.55rem; margin-bottom:14px; display:block; }
+.ed   { font-size:.94rem; font-weight:700; margin-bottom:5px; color:var(--tx); }
+.ein  { font-size:.78rem; color:var(--ac); margin-bottom:6px; font-weight:600; }
+.ey   { font-size:.67rem; color:var(--tx2); letter-spacing:.14em; text-transform:uppercase; padding:4px 10px; background:rgba(0,229,195,.08); display:inline-block; margin-bottom:12px; }
+[data-theme="light"] .ey { background:rgba(0,143,122,.08); }
+.edsc { font-size:.82rem; color:var(--tx2); line-height:1.95; }
+
+/* ═══════════════════════════════════════════
+   SKILLS
+═══════════════════════════════════════════ */
+.skg { display:grid; grid-template-columns:repeat(auto-fill,minmax(248px,1fr)); gap:18px; }
+.skc { background:var(--card); border:1px solid var(--border); padding:24px 22px; position:relative; overflow:hidden; transition:all .4s cubic-bezier(.23,1,.32,1); clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); }
+.skc::after { content:''; position:absolute; inset:0; background:radial-gradient(circle at 50% 0%,rgba(0,229,195,.07),transparent 52%); opacity:0; transition:opacity .4s; }
+[data-theme="light"] .skc::after { background:radial-gradient(circle at 50% 0%,rgba(0,143,122,.06),transparent 52%); }
+.skc:hover { transform:translateY(-6px); border-color:rgba(0,229,195,.3); box-shadow:var(--glow); }
+.skc:hover::after { opacity:1; }
+.ktop { display:flex; align-items:center; gap:11px; margin-bottom:10px; }
+.kico { font-size:1.35rem; }
+.knm  { font-size:.9rem; font-weight:700; color:var(--tx); }
+.kd   { font-size:.8rem; color:var(--tx2); line-height:1.9; margin-bottom:14px; }
+.bb   { height:3px; background:rgba(128,128,128,.12); border-radius:2px; overflow:hidden; }
+.bar  { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--ac),var(--ac2)); width:0; transition:width 1.3s cubic-bezier(.23,1,.32,1); }
+.bpct { font-size:.68rem; color:var(--ac); letter-spacing:.1em; margin-top:5px; text-align:right; font-weight:700; }
+
+/* ═══════════════════════════════════════════
+   PROJECTS
+═══════════════════════════════════════════ */
+.pg { display:grid; grid-template-columns:repeat(auto-fill,minmax(318px,1fr)); gap:22px; }
+.pc { background:var(--card); border:1px solid var(--border); overflow:hidden; transition:all .4s cubic-bezier(.23,1,.32,1); clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%); }
+.pc:hover { transform:translateY(-7px); border-color:rgba(0,229,195,.28); box-shadow:var(--glow); }
+.pt3  { height:3px; background:linear-gradient(90deg,var(--ac),var(--ac2)); }
+.pb   { padding:26px 22px 18px; }
+.pno  { font-size:.63rem; color:var(--tx2); letter-spacing:.2em; opacity:.5; margin-bottom:10px; }
+.pio  { font-size:1.7rem; margin-bottom:13px; display:block; }
+.ptl  { font-size:.94rem; font-weight:700; color:var(--tx); margin-bottom:8px; }
+.pdc  { font-size:.8rem; color:var(--tx2); line-height:1.95; }
+.pf   { padding:12px 22px 18px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+.tgs  { display:flex; gap:5px; flex-wrap:wrap; }
+.tg   { font-size:.62rem; color:var(--ac2); border:1px solid rgba(108,92,231,.22); padding:3px 9px; letter-spacing:.07em; text-transform:uppercase; }
+[data-theme="light"] .tg { color:var(--ac2); border-color:rgba(90,79,207,.25); }
+.plk  { font-size:.72rem; color:var(--ac); text-decoration:none; letter-spacing:.1em; transition:color .2s; font-weight:700; }
+.plk:hover { color:var(--tx); }
+
+/* ═══════════════════════════════════════════
+   EXPERIENCE
+═══════════════════════════════════════════ */
+.tl { position:relative; padding-left:46px; max-width:840px; margin:0 auto; }
+.tl::before { content:''; position:absolute; left:0; top:8px; bottom:8px; width:1px; background:linear-gradient(to bottom,var(--ac),rgba(0,229,195,.05)); }
+.ti { position:relative; margin-bottom:48px; opacity:0; transform:translateX(-18px); transition:all .65s cubic-bezier(.23,1,.32,1); }
+.ti.on { opacity:1; transform:translateX(0); }
+.tdot { position:absolute; left:-53px; top:5px; width:13px; height:13px; border-radius:50%; background:var(--bg); border:2px solid var(--ac); box-shadow:0 0 12px rgba(0,229,195,.5); }
+.tdot::after { content:''; position:absolute; inset:-5px; border-radius:50%; border:1px solid rgba(0,229,195,.18); animation:ringPls 2.3s ease-in-out infinite; }
+.tdt  { font-size:.68rem; color:var(--ac); letter-spacing:.2em; text-transform:uppercase; margin-bottom:7px; font-weight:700; }
+.tr   { font-size:1.08rem; font-weight:800; margin-bottom:4px; color:var(--tx); }
+.to   { font-size:.82rem; color:var(--tx2); margin-bottom:10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.tbg  { font-size:.62rem; letter-spacing:.1em; padding:2px 10px; background:rgba(0,229,195,.07); border:1px solid rgba(0,229,195,.16); color:var(--ac); text-transform:uppercase; }
+[data-theme="light"] .tbg { background:rgba(0,143,122,.08); border-color:rgba(0,143,122,.2); }
+.tds  { font-size:.84rem; color:var(--tx2); line-height:2.05; }
+.ttgs { display:flex; gap:7px; flex-wrap:wrap; margin-top:10px; }
+.ttg  { font-size:.63rem; color:var(--gold); border:1px solid rgba(249,199,79,.2); padding:2px 9px; letter-spacing:.07em; }
+[data-theme="light"] .ttg { color:var(--gold); border-color:rgba(200,134,10,.25); }
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+#contact .cw { display:grid; grid-template-columns:1fr 1.3fr; gap:70px; align-items:start; }
+.ci p  { font-size:.88rem; color:var(--tx2); line-height:2.1; margin-bottom:28px; }
+.cd    { display:flex; align-items:flex-start; gap:14px; margin-bottom:20px; }
+.cico  { width:40px; height:40px; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0; clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); }
+.clb   { font-size:.66rem; color:var(--tx2); letter-spacing:.12em; text-transform:uppercase; margin-bottom:3px; }
+.cv    { font-size:.86rem; color:var(--tx); line-height:1.6; }
+.cv a  { color:var(--ac); text-decoration:none; }
+.cv a:hover { text-decoration:underline; }
+.sr    { display:flex; gap:9px; flex-wrap:wrap; margin-top:28px; }
+.sl4   { width:42px; height:42px; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:.72rem; color:var(--tx2); transition:all .3s; font-weight:700; clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); }
+.sl4:hover { background:rgba(0,229,195,.1); color:var(--ac); border-color:var(--ac); box-shadow:var(--glow); transform:translateY(-4px); }
+[data-theme="light"] .sl4:hover { background:rgba(0,143,122,.1); }
+
+/* Form */
+.fg  { margin-bottom:16px; }
+.flb { display:block; font-size:.68rem; color:var(--ac); letter-spacing:.15em; text-transform:uppercase; margin-bottom:7px; font-weight:700; }
+.fi, .ft { font-family:'JetBrains Mono',monospace; width:100%; background:var(--card); border:1.5px solid var(--border); color:var(--tx); font-size:.85rem; padding:13px 15px; outline:none; transition:all .3s; resize:none; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); }
+.fi:focus, .ft:focus { border-color:var(--ac); background:rgba(0,229,195,.04); box-shadow:0 0 16px rgba(0,229,195,.1); }
+[data-theme="light"] .fi:focus, [data-theme="light"] .ft:focus { background:rgba(0,143,122,.04); }
+.fi::placeholder, .ft::placeholder { color:var(--tx2); }
+.ft  { height:118px; }
+.frow { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.bsb { font-family:'JetBrains Mono',monospace; width:100%; padding:14px; background:var(--ac); color:#04070f; font-size:.82rem; font-weight:800; letter-spacing:.15em; text-transform:uppercase; border:none; cursor:none; position:relative; overflow:hidden; clip-path:polygon(9px 0%,100% 0%,calc(100% - 9px) 100%,0% 100%); transition:all .3s; margin-top:4px; }
+.bsb::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent); transform:translateX(-100%); transition:transform .55s; }
+.bsb:hover::before { transform:translateX(100%); }
+.bsb:hover { box-shadow:0 0 34px rgba(0,229,195,.45); transform:translateY(-2px); }
+.fmsg { margin-top:12px; font-size:.78rem; text-align:center; padding:11px; display:none; border-radius:2px; }
+.fmsg.ok { background:rgba(0,229,195,.08); border:1px solid rgba(0,229,195,.25); color:var(--ac); display:block; }
+.fmsg.er { background:rgba(253,104,104,.08); border:1px solid rgba(253,104,104,.25); color:var(--ac3); display:block; }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer { position:relative; z-index:1; background:var(--bg3); border-top:1px solid var(--border); padding:54px 60px 32px; transition: var(--transition); }
+.fi2  { max-width:1180px; margin:0 auto; display:grid; grid-template-columns:1.7fr 1fr 1fr; gap:52px; margin-bottom:38px; }
+.fbl p { font-size:.8rem; color:var(--tx2); line-height:2; margin-bottom:16px; }
+.fco h4 { font-size:.68rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ac); margin-bottom:16px; font-weight:800; }
+.fco ul { list-style:none; }
+.fco li { margin-bottom:11px; }
+.fco a, .fco .fit { font-size:.79rem; color:var(--tx2); text-decoration:none; transition:color .2s; display:block; line-height:1.8; }
+.fco a:hover { color:var(--ac); }
+.fb2 { max-width:1180px; margin:0 auto; padding-top:24px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.fb2 p { font-size:.74rem; color:var(--tx2); }
+.fb2 span { color:var(--ac); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:960px) {
+  nav { padding:13px 18px; }
+  .nl { display:none; }
+  .ham { display:flex; }
+  section { padding:78px 18px; }
+  #hero { padding:100px 18px 66px; }
+  .ag, #contact .cw { grid-template-columns:1fr; gap:42px; }
+  .fi2 { grid-template-columns:1fr; gap:30px; }
+  .fb2 { flex-direction:column; text-align:center; }
+  .frow { grid-template-columns:1fr; }
+}
+
+
+
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="rng"></div>
+<div id="ptc"></div>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav>
+  <div class="logo">SMS<span>anaullah</span></div>
+  <ul class="nl" id="nl">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button id="theme-btn" onclick="toggleTheme()">
+      <span class="tb-icon" id="tb-icon">🌙</span>
+      <span class="tb-txt" id="tb-txt">Night Mode</span>
+    </button>
+    <button class="ham" onclick="mO()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <button class="mobx" onclick="mC()">&#x2715;</button>
+  <a href="#about"      onclick="mC()">About</a>
+  <a href="#education"  onclick="mC()">Education</a>
+  <a href="#skills"     onclick="mC()">Skills</a>
+  <a href="#projects"   onclick="mC()">Projects</a>
+  <a href="#experience" onclick="mC()">Experience</a>
+  <a href="#contact"    onclick="mC()">Contact</a>
+</div>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="orb o1"></div><div class="orb o2"></div>
+  <div class="hc">
+    <div class="badge">&#x25CF;&nbsp; Available for Work &amp; Collaboration</div>
+    <h1 class="hn">S M Sanaullah</h1>
+    <p class="hr2"><span id="tp" class="tp"></span></p>
+    <p class="hd">A dedicated educator and creative frontend developer based in Dhaka, Bangladesh — combining academic excellence with modern digital craftsmanship to deliver beautiful web experiences.</p>
+    <div class="hbtns">
+      <a href="#contact"  class="btn bp">&#x2192;&nbsp; Hire Me</a>
+      <a href="#projects" class="btn bo">&#x2197;&nbsp; View Projects</a>
+    </div>
+  </div>
+  <div class="scrl"><span>Scroll</span><div class="scrl-l"></div></div>
+</section>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section id="about" class="alt">
+  <div class="mx"><div class="ag">
+    <div>
+      <div class="sh">
+        <span class="sn">// 01 &mdash; Introduction</span>
+        <h2 class="st">About <em>Me</em></h2>
+        <div class="sl"></div>
+      </div>
+      <div class="at rv">
+        <p>Hello! I am <strong>S M Sanaullah</strong> &mdash; a hopeful, motivated, and self-confident individual deeply passionate about <em>education</em>, <em>technology</em>, and <em>digital creativity</em>. I firmly believe that education and modern technology together can unlock extraordinary opportunities for personal growth and social development.</p>
+        <p>My professional journey is shaped by a relentless desire to <strong>learn continuously</strong>, share knowledge generously, and craft meaningful digital experiences. I am an educator who not only delivers lessons but also nurtures curiosity, critical thinking, and lifelong learning.</p>
+        <p>Alongside my teaching career, I work as a <strong>Frontend Web Designer</strong> &mdash; creating responsive, visually compelling, and functionally elegant websites that bridge the gap between beautiful design and practical utility.</p>
+        <br>
+        <div class="ir"><span class="il">Full Name</span><span class="iv">S M Sanaullah</span></div>
+        <div class="ir"><span class="il">Profession</span><span class="iv">BSc Teacher &amp; Frontend Web Designer</span></div>
+        <div class="ir"><span class="il">Workplace</span><span class="iv">T &amp; T Boys High School, Banani, Dhaka</span></div>
+        <div class="ir"><span class="il">Email</span><span class="iv">tawhidsm11@gmail.com</span></div>
+        <div class="ir"><span class="il">WhatsApp</span><span class="iv">+880 1947-211411</span></div>
+        <div class="ir"><span class="il">Location</span><span class="iv">Banani, Dhaka 1213, Bangladesh</span></div>
+      </div>
+    </div>
+    <div class="sts rv">
+      <div class="sc"><div class="snum" data-t="3">0</div><div class="slbl">Years Teaching</div></div>
+      <div class="sc"><div class="snum" data-t="6">0</div><div class="slbl">Projects Done</div></div>
+      <div class="sc"><div class="snum" data-t="50">0</div><div class="slbl">Students Guided</div></div>
+      <div class="sc"><div class="snum" data-t="100">0</div><div class="slbl">% Dedication</div></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ══════════ EDUCATION ══════════ -->
+<section id="education">
+  <div class="mx">
+    <div class="sh">
+      <span class="sn">// 02 &mdash; Academic Background</span>
+      <h2 class="st">My <em>Education</em></h2>
+      <div class="sl"></div>
+    </div>
+    <div class="eg">
+      <div class="ec rv">
+        <span class="ei">🎓</span>
+        <div class="ed">Bachelor of Science (BSc)</div>
+        <div class="ein">National University &mdash; Dhaka, Bangladesh</div>
+        <div class="ey">2018 &mdash; 2022</div>
+        <div class="edsc">Completed undergraduate studies in Science with a strong focus on analytical thinking, problem-solving, and scientific research. Built the academic foundation that powers both my teaching career and technology work today.</div>
+      </div>
+      <div class="ec rv">
+        <span class="ei">📜</span>
+        <div class="ed">Higher Secondary Certificate (HSC)</div>
+        <div class="ein">Dhaka College &mdash; Dhaka, Bangladesh</div>
+        <div class="ey">2016 &mdash; 2018</div>
+        <div class="edsc">Completed HSC in the Science stream, establishing strong fundamentals in mathematics, physics, chemistry, and computer science — the core pillars of my professional identity today.</div>
+      </div>
+      <div class="ec rv">
+        <span class="ei">🖥️</span>
+        <div class="ed">Frontend Web Development</div>
+        <div class="ein">Self-Directed &mdash; freeCodeCamp, Udemy &amp; More</div>
+        <div class="ey">2021 &mdash; Present</div>
+        <div class="edsc">Completed comprehensive courses in HTML5, CSS3, JavaScript ES6+, and modern responsive design. Continuously advancing skills by following the latest web technologies and design trends.</div>
+      </div>
+      <div class="ec rv">
+        <span class="ei">🎨</span>
+        <div class="ed">UI/UX Design Fundamentals</div>
+        <div class="ein">Google &amp; Coursera &mdash; Online Certification</div>
+        <div class="ey">2022 &mdash; 2023</div>
+        <div class="edsc">Mastered user-centred design principles, wireframing, prototyping, and accessibility standards. Equipped to create modern, intuitive, and visually polished digital interfaces.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SKILLS ══════════ -->
+<section id="skills" class="alt">
+  <div class="mx">
+    <div class="sh">
+      <span class="sn">// 03 &mdash; Technical Expertise</span>
+      <h2 class="st">My <em>Skills</em></h2>
+      <div class="sl"></div>
+    </div>
+    <div class="skg">
+      <div class="skc rv"><div class="ktop"><span class="kico">🌐</span><div class="knm">HTML5</div></div><div class="kd">Writing clean, semantic, and accessible markup using modern HTML5 standards and best practices for the web.</div><div class="bb"><div class="bar" data-w="95"></div></div><div class="bpct">95%</div></div>
+      <div class="skc rv"><div class="ktop"><span class="kico">🎨</span><div class="knm">CSS3 &amp; Animations</div></div><div class="kd">Advanced Flexbox, CSS Grid, custom keyframe animations, smooth transitions, and mobile-first responsive design.</div><div class="bb"><div class="bar" data-w="90"></div></div><div class="bpct">90%</div></div>
+      <div class="skc rv"><div class="ktop"><span class="kico">⚡</span><div class="knm">JavaScript ES6+</div></div><div class="kd">Dynamic, interactive frontends using modern JS — DOM manipulation, event handling, and REST API integration.</div><div class="bb"><div class="bar" data-w="80"></div></div><div class="bpct">80%</div></div>
+      <div class="skc rv"><div class="ktop"><span class="kico">📐</span><div class="knm">UI / UX Design</div></div><div class="kd">Designing user-friendly interfaces with strong visual hierarchy, usability principles, and aesthetic clarity.</div><div class="bb"><div class="bar" data-w="85"></div></div><div class="bpct">85%</div></div>
+      <div class="skc rv"><div class="ktop"><span class="kico">📱</span><div class="knm">Responsive Design</div></div><div class="kd">Pixel-perfect, cross-device experiences using fluid layouts, media queries, and mobile-first strategies.</div><div class="bb"><div class="bar" data-w="92"></div></div><div class="bpct">92%</div></div>
+      <div class="skc rv"><div class="ktop"><span class="kico">📚</span><div class="knm">Teaching &amp; Mentoring</div></div><div class="kd">Inspiring critical thinking and lifelong curiosity in BSc students through structured and engaging lessons.</div><div class="bb"><div class="bar" data-w="97"></div></div><div class="bpct">97%</div></div>
+      <div class="skc rv"><div class="ktop"><span class="kico">💻</span><div class="knm">IT &amp; Lab Management</div></div><div class="kd">Managing educational technology infrastructure, user support, troubleshooting, and lab operations daily.</div><div class="bb"><div class="bar" data-w="93"></div></div><div class="bpct">93%</div></div>
+      <div class="skc rv"><div class="ktop"><span class="kico">🔧</span><div class="knm">Git &amp; Version Control</div></div><div class="kd">Managing code repositories with Git, maintaining clean version history, and collaborating on projects.</div><div class="bb"><div class="bar" data-w="70"></div></div><div class="bpct">70%</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROJECTS ══════════ -->
+<section id="projects">
+  <div class="mx">
+    <div class="sh">
+      <span class="sn">// 04 &mdash; Featured Work</span>
+      <h2 class="st">My <em>Projects</em></h2>
+      <div class="sl"></div>
+    </div>
+    <div class="pg">
+      <div class="pc rv"><div class="pt3"></div><div class="pb"><div class="pno">PROJECT &mdash; 01</div><span class="pio">🏫</span><div class="ptl">School Management Web Portal</div><div class="pdc">A fully responsive portal for T &amp; T Boys High School. Features student profiles, class schedules, notice board, teacher directory, and a contact form — delivering a clean, intuitive experience for students, teachers, and guardians.</div></div><div class="pf"><div class="tgs"><span class="tg">HTML5</span><span class="tg">CSS3</span><span class="tg">JavaScript</span></div><a href="#" class="plk">View &#x2197;</a></div></div>
+      <div class="pc rv"><div class="pt3" style="background:linear-gradient(90deg,var(--ac2),var(--ac))"></div><div class="pb"><div class="pno">PROJECT &mdash; 02</div><span class="pio">📖</span><div class="ptl">Interactive Learning Dashboard</div><div class="pdc">An educational dashboard for BSc students with progress tracking, study resources, assignment deadlines, and performance analytics. Clean, distraction-free UI built for focused academic work.</div></div><div class="pf"><div class="tgs"><span class="tg">HTML5</span><span class="tg">CSS3</span><span class="tg">JavaScript</span></div><a href="#" class="plk">View &#x2197;</a></div></div>
+      <div class="pc rv"><div class="pt3" style="background:linear-gradient(90deg,var(--ac3),var(--gold))"></div><div class="pb"><div class="pno">PROJECT &mdash; 03</div><span class="pio">💼</span><div class="ptl">Professional Portfolio Website</div><div class="pdc">This website — a cutting-edge animated portfolio with custom cursor, floating particles, scroll animations, live typing effect, day/night mode, and a validated contact form. Built with pure HTML, CSS &amp; JS.</div></div><div class="pf"><div class="tgs"><span class="tg">HTML5</span><span class="tg">CSS3</span><span class="tg">JavaScript</span></div><a href="#" class="plk">View &#x2197;</a></div></div>
+      <div class="pc rv"><div class="pt3" style="background:linear-gradient(90deg,var(--gold),var(--ac2))"></div><div class="pb"><div class="pno">PROJECT &mdash; 04</div><span class="pio">🛒</span><div class="ptl">Business Landing Page</div><div class="pdc">A modern, responsive landing page for a local business client. Includes animated hero, services showcase, testimonials, and a contact form with live validation — optimised for conversions and engagement.</div></div><div class="pf"><div class="tgs"><span class="tg">HTML5</span><span class="tg">CSS3</span><span class="tg">JavaScript</span></div><a href="#" class="plk">View &#x2197;</a></div></div>
+      <div class="pc rv"><div class="pt3" style="background:linear-gradient(90deg,#00c8ff,var(--ac))"></div><div class="pb"><div class="pno">PROJECT &mdash; 05</div><span class="pio">🌦️</span><div class="ptl">Live Weather App UI</div><div class="pdc">A beautifully crafted weather UI with dynamic sky backgrounds, animated weather icons, hourly forecasts, and smooth transitions. Showcases REST API integration and advanced creative frontend design.</div></div><div class="pf"><div class="tgs"><span class="tg">HTML5</span><span class="tg">CSS3</span><span class="tg">REST API</span></div><a href="#" class="plk">View &#x2197;</a></div></div>
+      <div class="pc rv"><div class="pt3" style="background:linear-gradient(90deg,#fd6868,var(--ac2))"></div><div class="pb"><div class="pno">PROJECT &mdash; 06</div><span class="pio">📝</span><div class="ptl">Classroom Quiz &amp; Exam Platform</div><div class="pdc">An interactive quiz platform for classroom assessment. Students take timed quizzes, get instant scored results, and review correct answers — a fast and reliable digital tool for modern educators.</div></div><div class="pf"><div class="tgs"><span class="tg">HTML5</span><span class="tg">CSS3</span><span class="tg">JavaScript</span></div><a href="#" class="plk">View &#x2197;</a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ EXPERIENCE ══════════ -->
+<section id="experience" class="alt">
+  <div class="mx">
+    <div class="sh">
+      <span class="sn">// 05 &mdash; Professional History</span>
+      <h2 class="st">My <em>Experience</em></h2>
+      <div class="sl"></div>
+    </div>
+    <div class="tl">
+      <div class="ti">
+        <div class="tdot"></div>
+        <div class="tdt">2022 &mdash; Present &nbsp;|&nbsp; Current Position</div>
+        <div class="tr">Computer Lab Operator</div>
+        <div class="to"><span>T &amp; T Boys High School &mdash; Road 1, Block I, Banani, Dhaka</span><span class="tbg">Full-time</span></div>
+        <div class="tds">Overseeing the complete operation and maintenance of the school's computer laboratory. Responsibilities include assisting students and teachers with daily technology use, resolving hardware and software issues, delivering IT training sessions, and maintaining a fully functional lab environment. Actively contributing to the school's digital transformation and supporting technology-integrated teaching methods.</div>
+        <div class="ttgs"><span class="ttg">IT Support</span><span class="ttg">Lab Management</span><span class="ttg">Student Training</span><span class="ttg">Troubleshooting</span><span class="ttg">Digital Education</span></div>
+      </div>
+      <div class="ti">
+        <div class="tdot"></div>
+        <div class="tdt">2021 &mdash; Present &nbsp;|&nbsp; Ongoing</div>
+        <div class="tr">BSc Science Teacher</div>
+        <div class="to"><span>Private Academic Coaching &mdash; Dhaka, Bangladesh</span><span class="tbg">Teaching</span></div>
+        <div class="tds">Teaching BSc-level science subjects with a philosophy centred on deep conceptual understanding rather than rote memorisation. Designing structured lesson plans, preparing customised study materials, and conducting regular assessments. Building a positive environment where students develop lasting academic confidence and strong scientific reasoning skills.</div>
+        <div class="ttgs"><span class="ttg">Science Teaching</span><span class="ttg">Lesson Planning</span><span class="ttg">Student Mentoring</span><span class="ttg">Curriculum Design</span></div>
+      </div>
+      <div class="ti">
+        <div class="tdot"></div>
+        <div class="tdt">2021 &mdash; Present &nbsp;|&nbsp; Freelance</div>
+        <div class="tr">Frontend Web Designer</div>
+        <div class="to"><span>Independent &amp; Freelance Projects &mdash; Remote</span><span class="tbg">Freelance</span></div>
+        <div class="tds">Designing and developing high-quality, responsive websites for educational institutions, small businesses, and individual professionals. Delivering pixel-perfect interfaces with clean code, smooth animations, and exceptional user experience across all devices. Projects span portfolios, landing pages, dashboards, and interactive web applications.</div>
+        <div class="ttgs"><span class="ttg">HTML / CSS / JS</span><span class="ttg">Responsive Design</span><span class="ttg">UI/UX</span><span class="ttg">Client Projects</span><span class="ttg">Web Performance</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section id="contact">
+  <div class="mx">
+    <div class="sh">
+      <span class="sn">// 06 &mdash; Let's Connect</span>
+      <h2 class="st">Get In <em>Touch</em></h2>
+      <div class="sl"></div>
+    </div>
+    <div class="cw">
+      <div class="ci">
+        <p class="rv">Whether you have a project in mind, a collaboration opportunity, or simply want to say hello — I would be delighted to hear from you. Let's create something meaningful together.</p>
+        <div class="rv">
+          <div class="cd"><div class="cico">✉</div><div><div class="clb">Email Address</div><div class="cv"><a href="mailto:tawhidsm11@gmail.com">tawhidsm11@gmail.com</a></div></div></div>
+          <div class="cd"><div class="cico">📍</div><div><div class="clb">Address</div><div class="cv">Road 1, Block I, Banani<br>Dhaka 1213, Bangladesh</div></div></div>
+          <div class="cd"><div class="cico">📱</div><div><div class="clb">WhatsApp</div><div class="cv"><a href="https://wa.me/8801947211411">+880 1947-211411</a></div></div></div>
+          <div class="cd"><div class="cico">🏫</div><div><div class="clb">Workplace</div><div class="cv">T &amp; T Boys High School, Banani, Dhaka</div></div></div>
+        </div>
+        <div class="sr rv social-icons">
+  <a href="https://facebook.com/smsanaullah0" target="_blank" class="sl4 fb" title="Facebook"><i class="fab fa-facebook-square" style="color: rgb(16, 23, 240);"></i></a>
+  <a href="https://instagram.com/smsanaullah0" target="_blank" class="sl4 ig" title="Instagram"><i class="fab fa-instagram" style="color: rgb(240, 16, 223);"></i></a>
+  <a href="https://t.me/smsanaullah0" target="_blank" class="sl4 tg" title="Telegram"><i class="fab fa-telegram" style="color: rgb(76, 149, 242);"></i></a>
+  <a href="https://bd.linkedin.com/in/s-m-sanaullah-a6768233a" target="_blank" class="sl4 ln" title="LinkedIn"><i class="fab fa-linkedin" style="color: rgb(76, 149, 242);"></i></a>
+  <a href="https://wa.me/8801947211411" target="_blank" class="sl4 wa" title="WhatsApp"><i class="fab fa-whatsapp-square" style="color: rgb(22, 210, 10);"></i></a>
+</div>
+      </div>
+      <div class="rv">
+        <div class="frow">
+          <div class="fg"><label class="flb" for="fn">Your Name</label><input class="fi" id="fn" type="text" placeholder="John Doe"></div>
+          <div class="fg"><label class="flb" for="fe">Email Address</label><input class="fi" id="fe" type="email" placeholder="you@example.com"></div>
+        </div>
+        <div class="fg"><label class="flb" for="fs">Subject</label><input class="fi" id="fs" type="text" placeholder="What is this about?"></div>
+        <div class="fg"><label class="flb" for="fm">Your Message</label><textarea class="ft" id="fm" placeholder="Write your message here..."></textarea></div>
+        <button class="bsb" onclick="sendMsg()">&#x2192;&nbsp; Send Message</button>
+        <div class="fmsg" id="fmsg"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="fi2">
+    <div class="fbl">
+      <div class="logo" style="display:block;margin-bottom:14px">SMS<span>anaullah</span></div>
+      <p>BSc Teacher &amp; Frontend Web Designer based in Dhaka, Bangladesh. Passionate about education, digital creativity, and building meaningful web experiences that make a real difference.</p>
+      <div class="sr">
+         <a href="https://facebook.com/smsanaullah0" target="_blank" class="sl4 fb" title="Facebook"><i class="fab fa-facebook-square" style="color: rgb(16, 23, 240);"></i></a>
+  <a href="https://instagram.com/smsanaullah0" target="_blank" class="sl4 ig" title="Instagram"><i class="fab fa-instagram" style="color: rgb(240, 16, 223);"></i></a>
+  <a href="https://t.me/smsanaullah0" target="_blank" class="sl4 tg" title="Telegram"><i class="fab fa-telegram" style="color: rgb(76, 149, 242);"></i></a>
+  <a href="https://bd.linkedin.com/in/s-m-sanaullah-a6768233a" target="_blank" class="sl4 ln" title="LinkedIn"><i class="fab fa-linkedin" style="color: rgb(76, 149, 242);"></i></a>
+  <a href="https://wa.me/8801947211411" target="_blank" class="sl4 wa" title="WhatsApp"><i class="fab fa-whatsapp-square" style="color: rgb(22, 210, 10);"></i></a>
+      </div>
+    </div>
+    <div class="fco">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about">About Me</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="fco">
+      <h4>Address &amp; Contact</h4>
+      <ul>
+        <li><span class="fit">📍 Road 1, Block I, Banani<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dhaka 1213, Bangladesh</span></li>
+        <li><a href="mailto:tawhidsm11@gmail.com">✉&nbsp; tawhidsm11@gmail.com</a></li>
+        <li><a href="https://wa.me/8801947211411">📱&nbsp; +880 1947-211411</a></li>
+        <li><span class="fit">🏫 T &amp; T Boys High School<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Banani, Dhaka 1213</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb2">
+    <p>&#169; 2025 <span>S M Sanaullah</span>. All rights reserved.</p>
+    <p>Designed &amp; Built with <span>&#x2665;</span> in <span>Dhaka, Bangladesh</span></p>
+  </div>
+</footer>
+
+<script>
+/* ─── Cursor ─── */
+const C=document.getElementById('cur'),R=document.getElementById('rng');
+let rx=0,ry=0,mx=0,my=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;C.style.left=mx+'px';C.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;R.style.left=rx+'px';R.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.btn,.sl4,.bsb,#theme-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{C.style.width='18px';C.style.height='18px';R.style.width='46px';R.style.height='46px';});
+  el.addEventListener('mouseleave',()=>{C.style.width='11px';C.style.height='11px';R.style.width='32px';R.style.height='32px';});
+});
+
+/* ─── Day / Night Toggle ─── */
+let isDark = true;
+function toggleTheme(){
+  isDark = !isDark;
+  const html = document.documentElement;
+  const icon = document.getElementById('tb-icon');
+  const txt  = document.getElementById('tb-txt');
+  if(isDark){
+    html.setAttribute('data-theme','dark');
+    icon.textContent = '🌙';
+    txt.textContent  = 'Night Mode';
+  } else {
+    html.setAttribute('data-theme','light');
+    icon.textContent = '☀️';
+    txt.textContent  = 'Day Mode';
+  }
+  // Update particle color
+  document.querySelectorAll('.pt').forEach(p=>{
+    p.style.background = isDark ? 'var(--ac)' : '#008f7a';
+  });
+}
+
+/* ─── Particles ─── */
+const P=document.getElementById('ptc');
+for(let i=0;i<30;i++){
+  const p=document.createElement('div'); p.classList.add('pt');
+  const s=Math.random()*2.4+.7;
+  p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;bottom:-8px;animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*12}s;`;
+  P.appendChild(p);
+}
+
+/* ─── Typing ─── */
+const words=['BSc Teacher','Frontend Web Designer','Computer Lab Operator','Digital Creator','Web Developer'];
+let wi=0,ci=0,del=false;
+const te=document.getElementById('tp');
+(function type(){
+  const w=words[wi];
+  if(!del){te.textContent=w.slice(0,++ci);if(ci===w.length){setTimeout(()=>del=true,2100);setTimeout(type,100);return;}}
+  else{te.textContent=w.slice(0,--ci);if(ci===0){del=false;wi=(wi+1)%words.length;}}
+  setTimeout(type,del?46:90);
+})();
+
+/* ─── Scroll Reveal ─── */
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* ─── Timeline ─── */
+const tobs=new IntersectionObserver(e=>e.forEach((x,i)=>{if(x.isIntersecting)setTimeout(()=>x.target.classList.add('on'),i*160);}),{threshold:.06});
+document.querySelectorAll('.ti').forEach(el=>tobs.observe(el));
+
+/* ─── Counters ─── */
+const cobs=new IntersectionObserver(e=>{
+  e.forEach(x=>{if(x.isIntersecting){
+    x.target.querySelectorAll('[data-t]').forEach(el=>{
+      const t=+el.dataset.t; let s=null;
+      (function step(ts){if(!s)s=ts;const p=Math.min((ts-s)/1700,1);el.textContent=Math.floor(p*t)+(t===100?'%':'+');if(p<1)requestAnimationFrame(step);})(performance.now());
+    });
+  }});
+},{threshold:.3});
+document.querySelectorAll('.sts').forEach(el=>cobs.observe(el));
+
+/* ─── Skill Bars ─── */
+const bobs=new IntersectionObserver(e=>{
+  e.forEach(x=>{if(x.isIntersecting)x.target.querySelectorAll('.bar').forEach((b,i)=>setTimeout(()=>b.style.width=b.dataset.w+'%',i*110));});
+},{threshold:.06});
+document.querySelectorAll('.skg').forEach(el=>bobs.observe(el));
+
+/* ─── Contact Form ─── */
+
+
+const scriptURL="https://script.google.com/macros/s/AKfycbxN-QFr8uX3ASlyPuyT3WY26EbPBhv60qgU1h5TujOIe-OsNhql_9lShjhOuji8AhdzFg/exec";
+
+function sendMsg(){
+
+const n=document.getElementById('fn').value.trim(),
+      e=document.getElementById('fe').value.trim(),
+      s=document.getElementById('fs').value.trim(),
+      m=document.getElementById('fm').value.trim(),
+      msg=document.getElementById('fmsg');
+
+if(!n||!e||!s||!m){
+msg.textContent='⚠ Please fill all fields.';
+msg.className='fmsg er';
+return;
+}
+
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){
+msg.textContent='⚠ Invalid email address.';
+msg.className='fmsg er';
+return;
+}
+
+msg.textContent='⟳ Sending message...';
+msg.className='fmsg ok';
+
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify({
+name:n,
+email:e,
+phone:s,
+message:m
+})
+})
+
+.then(res=>res.text())
+.then(data=>{
+
+if(data==="duplicate"){
+msg.textContent="❌ This email already submitted.";
+msg.className="fmsg er";
+return;
+}
+
+if(data==="limit"){
+msg.textContent="⚠ You already sent a message today.";
+msg.className="fmsg er";
+return;
+}
+
+msg.textContent="✓ Message sent successfully!";
+msg.className="fmsg ok";
+
+['fn','fe','fs','fm'].forEach(id=>document.getElementById(id).value='');
+
+})
+
+.catch(()=>{
+msg.textContent="❌ Server error. Try again.";
+msg.className="fmsg er";
+});
+
+}
+
+/* ─── Mobile Nav ─── */
+function mO(){document.getElementById('mob').classList.add('open');}
+function mC(){document.getElementById('mob').classList.remove('open');}
+
+/* ─── Nav Active Highlight ─── */
+const secs=document.querySelectorAll('section[id]'),nls=document.querySelectorAll('.nl a');
+window.addEventListener('scroll',()=>{
+  let cur=''; secs.forEach(s=>{if(scrollY>=s.offsetTop-240)cur=s.id;});
+  nls.forEach(l=>l.classList.toggle('act',l.getAttribute('href')==='#'+cur));
+});
+</script>
+</body>
+</html>
